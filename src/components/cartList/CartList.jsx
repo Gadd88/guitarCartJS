@@ -1,7 +1,25 @@
 import { CartItem } from "../"
+import Proptypes from 'prop-types'
 
+export const CartList = ({cart, removeItem, setCart}) => {
+    CartList.propTypes = {
+        cart: Proptypes.array,
+        removeItem: Proptypes.func,
+        setCart: Proptypes.func,
+    }
+    const decreaseItem = (item) => {
+        const itemSelected = cart.findIndex(item => item.id === item.id)
+        if(item.quantity > 1){
+            const newCart = structuredClone(cart)
+            newCart[itemSelected].quantity--
+            setCart(newCart)
+        }else if(item.quantity==1){
+            removeItem(item.id)
+        }
+    }
+    //array.reduce((acumulador, valorActual) => acumulador + valorActual, valorInicial)
+    const total = cart.reduce((acc, {quantity, price}) => acc + (quantity * price), 0)
 
-export const CartList = ({cart, removeItem}) => {
   return (
     <div id="carrito" className="bg-white p-3">
         <p className="text-center">El carrito esta vacio</p>
@@ -17,14 +35,16 @@ export const CartList = ({cart, removeItem}) => {
             </thead>
             <tbody>
             {
-                cart.map(guitar=>(
-                    <CartItem key={guitar.id} guitar={guitar} removeItem={removeItem}/>
-                ))
+                cart.length > 0 
+                    ?    cart.map(guitar=>(
+                            <CartItem key={guitar.id} guitar={guitar} removeItem={removeItem} decreaseItem={decreaseItem}/>
+                        ))
+                    : <tr className="text-center"><td colSpan={5}>No tienes items en el carrito</td></tr>
             }
             </tbody>
         </table>
         <p className="text-end">
-            Total pagar: <span className="fw-bold">$899</span>
+            Total pagar: <span className="fw-bold">${total}</span>
         </p>
         <button className="btn btn-dark w-100 mt-3 p-2">
             Vaciar Carrito

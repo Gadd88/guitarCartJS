@@ -1,4 +1,4 @@
-export const CartItem = ({ guitar, removeItem }) => {
+export const CartItem = ({ guitar, removeItem, decreaseItem }) => {
   return (
     <tr key={guitar.id}>
       <td>
@@ -11,7 +11,7 @@ export const CartItem = ({ guitar, removeItem }) => {
       <td>{guitar.name}</td>
       <td className="fw-bold">${guitar.price}</td>
       <td className="flex align-items-start gap-4">
-        <button type="button" className="btn btn-dark">
+        <button type="button" className="btn btn-dark" onClick={()=>decreaseItem(guitar)}>
           -
         </button>
         {guitar.quantity}

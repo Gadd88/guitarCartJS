@@ -6,6 +6,7 @@ export const Header = ({ cart, setCart }) => {
         const newCart = cart.filter(item => item.id !== id)
         setCart(newCart)
     }
+
   return (
     <header className="py-5 header">
       <div className="container-xl">
@@ -26,7 +27,7 @@ export const Header = ({ cart, setCart }) => {
                 src="./public/img/carrito.png"
                 alt="imagen carrito"
               />
-              <CartList cart={cart} removeItem={removeItem}/>
+              <CartList cart={cart} removeItem={removeItem}  setCart={setCart}/>
             </div>
           </nav>
         </div>
