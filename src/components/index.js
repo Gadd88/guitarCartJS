@@ -1,3 +1,5 @@
 export * from './header/Header'
 export * from './footer/Footer'
 export * from './guitar/Guitar'
+export * from './cartItem/CartItem'
+export * from './cartList/CartList'

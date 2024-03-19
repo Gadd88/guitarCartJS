@@ -6,14 +6,27 @@ import { useEffect } from "react";
 function App() {
 
   const [guitars, setGuitars] = useState([])
+  const [cart, setCart] = useState([])
   
   useEffect(()=>{
     setGuitars(db)
   },[])
 
+  const addToCart = (item) => {
+    const itemExist = cart.findIndex(guitar => guitar.id === item.id )
+    if(itemExist>=0){
+      const newCart = [...cart]
+      newCart[itemExist].quantity++
+      setCart(newCart)
+    }else{
+      item.quantity = 1
+      setCart([...cart, item])
+    }
+  }
+
   return (
     <>
-      <Header />
+      <Header cart={cart} setCart={setCart}/>
 
       <main className="container-xl mt-5">
         <h2 className="text-center">Nuestra Colección</h2>
@@ -23,10 +36,8 @@ function App() {
             guitars.map((guitar)=>(
               <Guitar
                 key={guitar.id} 
-                model={guitar.name} 
-                description={guitar.description}
-                price={guitar.price}
-                image={guitar.image}/>
+                guitar={guitar}
+                addToCart={addToCart}/>
 
             ))
           }
