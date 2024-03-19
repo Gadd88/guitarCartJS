@@ -1,54 +1,59 @@
-import { CartItem } from "../"
-import Proptypes from 'prop-types'
+import { useContext, useMemo } from 'react'
+import { CartItem } from "../";
+import { CartContext } from '../../context/CartContext';
+import { useCart } from '../../hooks/useCart';
 
-export const CartList = ({cart, removeItem, setCart}) => {
-    CartList.propTypes = {
-        cart: Proptypes.array,
-        removeItem: Proptypes.func,
-        setCart: Proptypes.func,
-    }
-    const decreaseItem = (item) => {
-        const itemSelected = cart.findIndex(item => item.id === item.id)
-        if(item.quantity > 1){
-            const newCart = structuredClone(cart)
-            newCart[itemSelected].quantity--
-            setCart(newCart)
-        }else if(item.quantity==1){
-            removeItem(item.id)
-        }
-    }
-    //array.reduce((acumulador, valorActual) => acumulador + valorActual, valorInicial)
-    const total = cart.reduce((acc, {quantity, price}) => acc + (quantity * price), 0)
+export const CartList = () => {
 
+  const {cart} = useContext(CartContext)
+  const {dumpCart} = useCart()
+
+  //state derivado
+  const isEmpty = useMemo( () => cart.length === 0, [cart]); 
+
+  //array.reduce((acumulador, valorActual) => acumulador + valorActual, valorInicial)
+  const cartTotal = useMemo(()=> cart.reduce(
+    (total, { quantity, price }) => total + quantity * price,
+    0
+  ),[cart]);
+  
   return (
     <div id="carrito" className="bg-white p-3">
-        <p className="text-center">El carrito esta vacio</p>
-        <table className="w-100 table">
-            <thead>
-            <tr>
-                <th>Imagen</th>
-                <th>Nombre</th>
-                <th>Precio</th>
-                <th>Cantidad</th>
-                <th></th>
+      <table className="w-100 table">
+        <thead>
+          <tr>
+            <th>Imagen</th>
+            <th>Nombre</th>
+            <th>Precio</th>
+            <th>Cantidad</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {!isEmpty ? (
+            cart?.map((guitar) => (
+              <CartItem
+                key={guitar.id}
+                guitar={guitar}
+              />
+            ))
+          ) : (
+            <tr className="text-center">
+              <td colSpan={5}>El carrito esta vacío</td>
             </tr>
-            </thead>
-            <tbody>
-            {
-                cart.length > 0 
-                    ?    cart.map(guitar=>(
-                            <CartItem key={guitar.id} guitar={guitar} removeItem={removeItem} decreaseItem={decreaseItem}/>
-                        ))
-                    : <tr className="text-center"><td colSpan={5}>No tienes items en el carrito</td></tr>
-            }
-            </tbody>
-        </table>
-        <p className="text-end">
-            Total pagar: <span className="fw-bold">${total}</span>
-        </p>
-        <button className="btn btn-dark w-100 mt-3 p-2">
+          )}
+        </tbody>
+      </table>
+      {!isEmpty ? (
+        <>
+          <p className="text-end">
+            Total pagar: <span className="fw-bold">${cartTotal}</span>
+          </p>
+          <button className="btn btn-dark w-100 mt-3 p-2" onClick={dumpCart}>
             Vaciar Carrito
-        </button>
+          </button>
+        </>
+      ) : null}
     </div>
-  )
-}
+  );
+};

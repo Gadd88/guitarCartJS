@@ -1,11 +1,13 @@
 import PropTypes from "prop-types";
+import { useCart } from "../../hooks/useCart";
 
-export const Guitar = ({ guitar, addToCart }) => {
-    const { name, description, price, image } = guitar
+export const Guitar = ({ guitar }) => {
     Guitar.propTypes = {
-        guitar: PropTypes.object,
-        addToCart: PropTypes.func
+        guitar: PropTypes.object
     };
+    
+    const {addToCart} = useCart()
+    const { name, description, price, image } = guitar
 
   return (
     <div className="col-md-6 col-lg-4 my-4 row align-items-center">

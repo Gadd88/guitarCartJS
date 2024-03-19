@@ -1,11 +1,6 @@
 import { CartList } from "../";
 
-export const Header = ({ cart, setCart }) => {
-
-    const removeItem = (id) => {
-        const newCart = cart.filter(item => item.id !== id)
-        setCart(newCart)
-    }
+export const Header = () => {
 
   return (
     <header className="py-5 header">
@@ -27,7 +22,7 @@ export const Header = ({ cart, setCart }) => {
                 src="./public/img/carrito.png"
                 alt="imagen carrito"
               />
-              <CartList cart={cart} removeItem={removeItem}  setCart={setCart}/>
+              <CartList />
             </div>
           </nav>
         </div>
