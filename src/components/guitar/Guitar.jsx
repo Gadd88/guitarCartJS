@@ -5,7 +5,7 @@ export const Guitar = ({ guitar }) => {
     Guitar.propTypes = {
         guitar: PropTypes.object
     };
-    
+
     const {addToCart} = useCart()
     const { name, description, price, image } = guitar
 
@@ -14,7 +14,7 @@ export const Guitar = ({ guitar }) => {
       <div className="col-4">
         <img
           className="img-fluid"
-          src={`./public/img/${image}.jpg`}
+          src={`/img/${image}.jpg`}
           alt="imagen guitarra"
         />
       </div>
